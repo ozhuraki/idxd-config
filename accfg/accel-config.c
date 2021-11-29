@@ -7,7 +7,9 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#ifdef HAVE_KMOD
 #include <libkmod.h>
+#endif
 #include <builtin.h>
 #include <accfg/libaccel_config.h>
 #include <ccan/array_size/array_size.h>
@@ -75,6 +77,7 @@ static struct cmd_struct commands[] = {
 #endif
 };
 
+#ifdef HAVE_KMOD
 static int idxd_kmod_init(struct kmod_ctx **ctx, struct kmod_module **mod)
 {
 	int rc;
@@ -97,12 +100,15 @@ static int idxd_kmod_init(struct kmod_ctx **ctx, struct kmod_module **mod)
 
 	return rc;
 }
+#endif
 
 int main(int argc, const char **argv)
 {
 	struct accfg_ctx *ctx;
+#ifdef HAVE_KMOD
 	struct kmod_ctx *kmod_ctx;
 	struct kmod_module *mod;
+#endif
 	unsigned int last_error;
 	int rc;
 
@@ -122,16 +128,19 @@ int main(int argc, const char **argv)
 		return -EINVAL;
 	}
 
+#ifdef HAVE_KMOD
 	rc = idxd_kmod_init(&kmod_ctx, &mod);
 	if (rc < 0) {
 		fprintf(stderr, "Failed initializing kernel module\n");
 		goto error_exit;
 	}
-
+#endif
 	rc = accfg_new(&ctx);
 	if (rc) {
+#ifdef HAVE_KMOD
 		kmod_module_unref(mod);
 		kmod_unref(kmod_ctx);
+#endif
 		goto error_exit;
 	}
 
@@ -161,9 +170,11 @@ int main(int argc, const char **argv)
 		printf(": %s\n", accfg_ctx_get_last_error_str(ctx));
 	}
 	accfg_unref(ctx);
+
+#ifdef HAVE_KMOD
 	kmod_module_unref(mod);
 	kmod_unref(kmod_ctx);
-
+#endif
 	if (!rc)
 		return EXIT_SUCCESS;
 error_exit:

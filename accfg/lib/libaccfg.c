@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <uuid/uuid.h>
 #include <errno.h>
+#include <inttypes.h>
 #include <ctype.h>
 #include <libgen.h>
 #include <string.h>

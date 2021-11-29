@@ -8,8 +8,12 @@
 #include <stdbool.h>
 #include <syslog.h>
 #include <string.h>
+#ifdef HAVE_UDEV
 #include <libudev.h>
+#endif
+#ifdef HAVE_KMOD
 #include <libkmod.h>
+#endif
 #include <util/log.h>
 #include <uuid/uuid.h>
 #include <ccan/list/list.h>
@@ -160,13 +164,18 @@ struct accfg_ctx {
 	struct accfg_error_ctx *error_ctx;
 };
 
+#ifdef HAVE_UDEV
 static inline int check_udev(struct udev *udev)
 {
 	return udev ? 0 : -ENXIO;
 }
+#endif
 
+#ifdef HAVE_KMOD
 static inline int check_kmod(struct kmod_ctx *kmod_ctx)
 {
 	return kmod_ctx ? 0 : -ENXIO;
 }
+#endif
+
 #endif /* _LIBACCFG_PRIVATE_H_ */
