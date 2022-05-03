@@ -1,0 +1,1 @@
+test > sudo strace -x -f -s 8192 -y -e trace=\!read,close ./dsa_test -v -d dsa0/wq0.0 -f 0x0 -o 0x3 2>&1 | less
