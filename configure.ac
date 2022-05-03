@@ -156,8 +156,6 @@ my_CFLAGS="\
 -Wmaybe-uninitialized \
 -Wdeclaration-after-statement \
 -Wunused-result \
--D_FORTIFY_SOURCE=2 \
--O2
 "
 AC_SUBST([my_CFLAGS])
 
