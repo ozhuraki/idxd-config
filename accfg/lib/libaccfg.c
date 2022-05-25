@@ -636,7 +636,7 @@ static void *add_device(void *parent, int id, const char *ctl_base,
 
 	rc = accfg_set_param(ctx, dfd, "cmd_status", "1", 1);
 	/* older drivers don't support writing to cmd_status */
-	if (rc && rc != -EACCES) {
+	if (rc && rc != -EACCES && rc != -EROFS) {
 		err(ctx, "Failed resetting cmd status %d\n", rc);
 		close(dfd);
 		goto err_device;
