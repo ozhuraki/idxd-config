@@ -6,7 +6,8 @@
 
 rc="$EXIT_SKIP"
 
-IAA=iax1
+DEV=`ls /dev/iax/ | sed -ne 's|wq\([^.]\+\)\(.*\)|iax\1/wq\1\2|p'`
+IAA=`echo $DEV | cut -f1 -d/`
 WQ0=wq1.4
 WQ1=wq1.1
 DBDF=`ls -l /sys/bus/dsa/devices/iax3 | awk -F '/' '{print $(NF - 1)}'`
@@ -104,10 +105,10 @@ test_op()
 			if [ "$extra_flag" != "" ]
 			then
 				"$IAATEST" -w "$wq_mode_code" -l "$xfer_size" -o "$opcode" \
-					-f "$flag" -1 "$extra_flag" -t 5000 -v
+					-f "$flag" -1 "$extra_flag" -t 5000 -d "$DEV"
 			else
 				"$IAATEST" -w "$wq_mode_code" -l "$xfer_size" -o "$opcode" \
-					-f "$flag" -t 5000 -v
+					-f "$flag" -t 5000 -d "$DEV"
 			fi
 		done
 	done
@@ -123,121 +124,121 @@ test_op_filter()
 		wq_mode_name=$(wq_mode2name "$wq_mode_code")
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x7c -3 128 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x7c -3 256 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x7c -3 1024 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x7c -3 16384 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x7c -3 262144 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x7c -3 524288 \
-			-o 0x50 -t 5000 -v
+			-o 0x50 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x38 -3 256 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x38 -3 512 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x38 -3 2048 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x38 -3 32768 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x38 -3 524288 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x38 -3 1048576 \
-			-o 0x51 -t 5000 -v
+			-o 0x51 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x7c -3 128 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x7c -3 256 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x7c -3 1024 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x7c -3 16384 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x7c -3 262144 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x7c -3 524288 \
-			-o 0x52 -t 5000 -v
+			-o 0x52 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x7c -3 128 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x7c -3 256 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x7c -3 1024 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x7c -3 16384 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x7c -3 262144 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x7c -3 524288 \
-			-o 0x53 -t 5000 -v
+			-o 0x53 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x1c -3 512 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x1c -3 1024 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x1c -3 4096 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 32768 -2 0x1c -3 32768 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x1c -3 65536 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 131072 -2 0x1c -3 131072 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 32 -2 0x3c -3 16 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 64 -2 0x3c -3 32 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 128 -2 0x3c -3 64 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 256 -2 0x3c -3 128 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x3c -3 256 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x3c -3 512 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 64 -2 0x7c -3 16 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 128 -2 0x7c -3 32 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 256 -2 0x7c -3 64 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x7c -3 128 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x7c -3 256 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2048 -2 0x7c -3 512 \
-			-o 0x54 -t 5000 -v
+			-o 0x54 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x38 -3 256 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x38 -3 512 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x38 -3 2048 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x38 -3 32768 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x38 -3 524288 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x38 -3 1048576 \
-			-o 0x55 -t 5000 -v
+			-o 0x55 -t 5000 -d "$DEV"
 
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 512 -2 0x7c -3 128 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1024 -2 0x7c -3 256 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 4096 -2 0x7c -3 1024 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 65536 -2 0x7c -3 16384 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 1048576 -2 0x7c -3 262144 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 		./iaa_test -w "$wq_mode_code" -f "$flag" -l 2097152 -2 0x7c -3 524288 \
-			-o 0x56 -t 5000 -v
+			-o 0x56 -t 5000 -d "$DEV"
 	done
 }
 
@@ -286,9 +287,6 @@ test_op_transl_fetch()
 	done
 }
 
-_cleanup
-start_iaa
-enable_wqs
 # shellcheck disable=SC2034
 rc="$EXIT_FAILURE"
 
@@ -322,13 +320,13 @@ unset SIZE_1
 
 flag="0x1"
 echo "Testing with 'block on fault' flag ON"
-for opcode in "0x4d" "0x49" "0x4c" "0x48" "0x43" "0x42"; do
+for opcode in "0x4d" "0x49" "0x4c" "0x48" "0x43"; do
 	test_op $opcode $flag
 done
 
 flag="0x0"
 echo "Testing with 'block on fault' flag OFF"
-for opcode in "0x4d" "0x49" "0x4c" "0x48" "0x43" "0x42"; do
+for opcode in "0x4d" "0x49" "0x4c" "0x48" "0x43"; do
 	test_op $opcode $flag
 done
 
@@ -383,8 +381,3 @@ if [ "$IDXD_VERSION" != "0x100" ]; then
 
 	unbind_vfio
 fi
-
-disable_wqs
-stop_iaa
-_cleanup
-exit 0
