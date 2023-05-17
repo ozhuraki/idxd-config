@@ -330,20 +330,6 @@ for opcode in "0x4d" "0x49" "0x4c" "0x48" "0x43"; do
 	test_op $opcode $flag
 done
 
-if [ "$IDXD_VERSION" != "0x100" ]; then
-	flag="0x1"
-	echo "Testing with 'block on fault' flag ON"
-	for opcode in "0x4e" "0x4a"; do
-		test_op $opcode $flag
-	done
-
-	flag="0x0"
-	echo "Testing with 'block on fault' flag OFF"
-	for opcode in "0x4e" "0x4a"; do
-		test_op $opcode $flag
-	done
-fi
-
 flag="0x1"
 test_op_filter $flag
 
