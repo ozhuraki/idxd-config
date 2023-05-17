@@ -6,7 +6,8 @@
 
 rc="$EXIT_SKIP"
 
-DSA=dsa0
+DEV=`ls /dev/dsa/ | sed -ne 's|wq\([^.]\+\)\(.*\)|dsa\1/wq\1\2|p'`
+DSA=`echo $DEV | cut -f1 -d/`
 WQ0=wq0.0
 WQ1=wq0.1
 
@@ -70,7 +71,7 @@ test_op()
 		for xfer_size in $SIZE_1 $SIZE_4K $SIZE_64K $SIZE_1M $SIZE_2M; do
 			echo "Testing $xfer_size bytes"
 			"$DSATEST" -w "$wq_mode_code" -l "$xfer_size" -o "$opcode" \
-				-f "$flag" t200 -v
+				-f "$flag" t200 -d "$DEV"
 		done
 	done
 }
@@ -99,7 +100,7 @@ test_op_batch()
 		for xfer_size in $SIZE_1 $SIZE_4K $SIZE_64K $SIZE_1M $SIZE_2M; do
 			echo "Testing $xfer_size bytes"
 			"$DSATEST" -w "$wq_mode_code" -l "$xfer_size" -o 0x1 -b "$opcode" \
-				-c 16 -f "$flag" t2000 -v
+				-c 16 -f "$flag" t2000 -d "$DEV"
 		done
 	done
 }
@@ -124,7 +125,7 @@ test_dif_op()
 		for xfer_size in $SIZE_512 $SIZE_1K $SIZE_4K; do
 			echo "Testing $xfer_size bytes"
 			"$DSATEST" -w "$wq_mode_code" -l "$xfer_size" -o "$opcode" \
-				-f "$flag" t200 -v
+				-f "$flag" t200 -d "$DEV"
 		done
 	done
 }
@@ -149,13 +150,10 @@ test_dif_op_batch()
 		for xfer_size in $SIZE_512 $SIZE_1K $SIZE_4K; do
 			echo "Testing $xfer_size bytes"
 			"$DSATEST" -w "$wq_mode_code" -l "$xfer_size" -o 0x1 -b "$opcode" \
-				-c 16 -f "$flag" t2000 -v
+				-c 16 -f "$flag" t2000 -d "$DEV"
 		done
 	done
 }
-_cleanup
-start_dsa
-enable_wqs
 # shellcheck disable=SC2034
 rc="$EXIT_FAILURE"
 
@@ -188,7 +186,3 @@ for opcode in "0x12" "0x13" "0x14" "0x15"; do
 	test_dif_op_batch $opcode $flag
 done
 
-disable_wqs
-stop_dsa
-_cleanup
-exit 0
